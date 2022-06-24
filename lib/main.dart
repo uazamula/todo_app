@@ -14,16 +14,24 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primaryColor: Colors.amberAccent,// blue is by default. for appbar, buttons and other non-text widgets// doesn't work
-        brightness: Brightness.light
-
+        colorScheme: ColorScheme(
+            primary: Colors.yellow,
+            secondary: Colors.red,
+            error: Colors.red,
+            onPrimary: Colors.red,
+            surface: Colors.red,
+            onSurface: Colors.red,
+            background: Colors.red,
+            onSecondary: Colors.red,
+            onError: Colors.red,
+            brightness: Brightness.light,
+            onBackground: Colors.red),
       ),
       themeMode: ThemeMode.light,
       darkTheme: ThemeData(
-        primaryColor: Colors.yellow,// blue is by default. for appbar, buttons and other non-text widgets
-          brightness: Brightness.dark
-
-      ),
+          primaryColor: Colors.yellow,
+          // blue is by default. for appbar, buttons and other non-text widgets
+          brightness: Brightness.dark),
       home: HomePage(),
     );
   }
