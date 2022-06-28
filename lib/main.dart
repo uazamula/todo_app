@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
+import 'package:goals_app/services/theme_services.dart';
 import 'package:goals_app/ui/home_page.dart';
+import 'package:goals_app/ui/theme.dart';
 
-void main() {
+Future<void> main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  await GetStorage.init();
   runApp(const MyApp());
 }
 
@@ -10,29 +16,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
+    return GetMaterialApp(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-// https://stackoverflow.com/questions/69295173/primarycolor-property-in-themedata-does-not-work-in-flutter#:~:text=With%20the%20newest%20versions%20of,%3A%20ColorScheme(%20primary%3A%20Colors.
-        colorScheme: ColorScheme(
-            primary: Colors.yellow,
-            secondary: Colors.red,
-            error: Colors.red,
-            onPrimary: Colors.red,
-            surface: Colors.red,
-            onSurface: Colors.red,
-            background: Colors.red,
-            onSecondary: Colors.red,
-            onError: Colors.red,
-            brightness: Brightness.light,
-            onBackground: Colors.red),
-      ),
-      themeMode: ThemeMode.light,
-      darkTheme: ThemeData(
-          primaryColor: Colors.yellow,
-          // blue is by default. for appbar, buttons and other non-text widgets
-          brightness: Brightness.dark),
+      theme: Themes.light,
+      darkTheme: Themes.dark,
+      themeMode: ThemeService().theme,//ThemeMode.light,
       home: HomePage(),
     );
   }
