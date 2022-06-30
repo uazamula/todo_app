@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:goals_app/services/notification_services.dart';
 import 'package:goals_app/services/theme_services.dart';
+import 'package:goals_app/ui/add_task_bar.dart';
 import 'package:goals_app/ui/theme.dart';
 import 'package:goals_app/ui/widgets/button.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -81,22 +82,25 @@ class _HomePageState extends State<HomePage> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                DateFormat.yMMMMd().format(DateTime.now()),
-                style: subHeadingStyle,
-              ),
-              Text(
-                "Today",
-                style: headingStyle,
-              )
-            ],
+          Container(
+
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  DateFormat.yMMMMd().format(DateTime.now()),
+                  style: subHeadingStyle,
+                ),
+                Text(
+                  "Today",
+                  style: headingStyle,
+                )
+              ],
+            ),
           ),
           MyButton(
             label: '+ Add Task',
-            onTap: () {},
+            onTap: () {Get.to(AddTaskPage());},
           ),
         ],
       ),
