@@ -39,6 +39,13 @@ class _AddTaskPageState extends State<AddTaskPage> {
                     _getDateFromUser();
                   },
                 ),
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    child: Container(),
+                  )
+                ],
               )
             ],
           ),
@@ -75,12 +82,12 @@ class _AddTaskPageState extends State<AddTaskPage> {
         initialDate: DateTime.now(),
         firstDate: DateTime(2020),
         lastDate: DateTime(2027));
-    if(_pickerDate!=null){
+    if (_pickerDate != null) {
       setState(() {
         _selectedDate = _pickerDate;
         print(_selectedDate);
       });
-    } else{
+    } else {
       print('something is wrong');
     }
   }
