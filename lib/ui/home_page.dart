@@ -1,12 +1,15 @@
 import 'package:date_picker_timeline/date_picker_widget.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
 import 'package:goals_app/controllers/task_controller.dart';
+import 'package:goals_app/models/task.dart';
 import 'package:goals_app/services/notification_services.dart';
 import 'package:goals_app/services/theme_services.dart';
 import 'package:goals_app/ui/add_task_bar.dart';
 import 'package:goals_app/ui/theme.dart';
 import 'package:goals_app/ui/widgets/button.dart';
+import 'package:goals_app/ui/widgets/task_tile.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 
@@ -42,6 +45,7 @@ class _HomePageState extends State<HomePage> {
         children: [
           _addTaskBar(),
           _addDateBar(),
+          SizedBox(height: 10),
           _showTasks(),
         ],
       ),
@@ -54,15 +58,50 @@ class _HomePageState extends State<HomePage> {
           itemCount: _taskController.taskList.length,
           itemBuilder: (_, index) {
             print(_taskController.taskList.length);
-            return Container(
-              width: 100,
-              height: 50,
-              color: Colors.green,
-              margin: EdgeInsets.only(bottom: 10),
-              child: Text(_taskController.taskList[index].title!.toString()),
+            return
+                /*GestureDetector(
+              onTap: (){
+                _taskController.delete(_taskController.taskList[index]);
+                _taskController.getTask();
+              },
+              child: Container(
+                width: 100,
+                height: 50,
+                color: Colors.green,
+                margin: EdgeInsets.only(bottom: 10),
+                child: Text(_taskController.taskList[index].title!.toString()),
+              ),)*/
+                AnimationConfiguration.staggeredList(
+              position: index,
+              child: SlideAnimation(
+                child: FadeInAnimation(
+                  child: Row(
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          _showBottomSheet(
+                              context, _taskController.taskList[index]);
+                        },
+                        child: TaskTile(_taskController.taskList[index]),
+                      )
+                    ],
+                  ),
+                ),
+              ),
             );
           });
     }));
+  }
+
+  _showBottomSheet(BuildContext context, Task task) {
+    Get.bottomSheet(
+      Container(
+        padding: EdgeInsets.only(top: 4),
+        height: task.isCompleted == 1
+            ? MediaQuery.of(context).size.height * 0.24
+            : MediaQuery.of(context).size.height * 0.32,
+      ),
+    );
   }
 
   _addDateBar() {
@@ -117,8 +156,8 @@ class _HomePageState extends State<HomePage> {
           ),
           MyButton(
             label: '+ Add Task',
-            onTap: () async{
-              await Get.to(()=>AddTaskPage());
+            onTap: () async {
+              await Get.to(() => AddTaskPage());
               _taskController.getTask();
             },
           ),
