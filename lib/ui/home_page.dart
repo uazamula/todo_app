@@ -58,8 +58,23 @@ class _HomePageState extends State<HomePage> {
           itemCount: _taskController.taskList.length,
           itemBuilder: (_, index) {
             print(_taskController.taskList.length);
-            return
-                /*GestureDetector(
+            Task task = _taskController.taskList[index];
+            print(task.toJson());
+            if (task.repeat == 'Daily' ||
+                task.date ==
+                    AddTaskPage.myDateFormat(
+                        _selectedDate) /*DateFormat.yMd().format(_selectedDate)*/) {
+              DateTime date = DateFormat.jm().parse(task.startTime!.toString());
+              var myTime = DateFormat('HH:mm').format(date);
+              var myTimeArr = myTime.toString().split(':');
+              notifyHelper.scheduledNotification(
+                int.parse(myTimeArr[0]),
+                int.parse(myTimeArr[1]),
+                task,
+              );
+              print(myTime);
+              return
+                  /*GestureDetector(
               onTap: (){
                 _taskController.delete(_taskController.taskList[index]);
                 _taskController.getTask();
@@ -71,24 +86,26 @@ class _HomePageState extends State<HomePage> {
                 margin: EdgeInsets.only(bottom: 10),
                 child: Text(_taskController.taskList[index].title!.toString()),
               ),)*/
-                AnimationConfiguration.staggeredList(
-              position: index,
-              child: SlideAnimation(
-                child: FadeInAnimation(
-                  child: Row(
-                    children: [
-                      GestureDetector(
-                        onTap: () {
-                          _showBottomSheet(
-                              context, _taskController.taskList[index]);
-                        },
-                        child: TaskTile(_taskController.taskList[index]),
-                      )
-                    ],
+                  AnimationConfiguration.staggeredList(
+                position: index,
+                child: SlideAnimation(
+                  child: FadeInAnimation(
+                    child: Row(
+                      children: [
+                        GestureDetector(
+                          onTap: () {
+                            _showBottomSheet(context, task);
+                          },
+                          child: TaskTile(task),
+                        )
+                      ],
+                    ),
                   ),
                 ),
-              ),
-            );
+              );
+            } else {
+              return Container();
+            }
           });
     }));
   }
@@ -116,6 +133,7 @@ class _HomePageState extends State<HomePage> {
                 : _bottomSheetButton(
                     label: 'Task Completed',
                     onTap: () {
+                      _taskController.markTaskCompleteted(task.id!);
                       Get.back();
                     },
                     clr: primaryClr,
@@ -126,7 +144,6 @@ class _HomePageState extends State<HomePage> {
               label: 'Delete Task',
               onTap: () {
                 _taskController.delete(task);
-                _taskController.getTasks();
                 Get.back();
               },
               clr: Colors.red[300]!,
@@ -209,7 +226,9 @@ class _HomePageState extends State<HomePage> {
               fontSize: 14, fontWeight: FontWeight.w600, color: Colors.grey),
         ),
         onDateChange: (date) {
-          _selectedDate = date;
+          setState(() {
+            _selectedDate = date;
+          });
         },
       ),
     );
@@ -260,7 +279,7 @@ class _HomePageState extends State<HomePage> {
               body: Get.isDarkMode
                   ? "Activated Light Theme"
                   : "Activated Dark Theme");
-          notifyHelper.scheduledNotification();
+          // notifyHelper.scheduledNotification();//!!!!comment in
         },
         child: Icon(
           Get.isDarkMode ? Icons.wb_sunny_outlined : Icons.nightlight_round,

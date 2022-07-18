@@ -9,7 +9,9 @@ import 'package:intl/intl.dart';
 
 class AddTaskPage extends StatefulWidget {
   const AddTaskPage({Key? key}) : super(key: key);
-
+  static myDateFormat(selectedDate){
+    return DateFormat.yMd().format(selectedDate);
+  }
   @override
   _AddTaskPageState createState() => _AddTaskPageState();
 }
@@ -63,7 +65,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
               ),
               MyInputField(
                 title: 'Date',
-                hint: DateFormat.yMd().format(_selectedDate),
+                hint: AddTaskPage.myDateFormat(_selectedDate),//DateFormat.yMd().format(_selectedDate),
                 widget: IconButton(
                   icon: Icon(
                     Icons.calendar_today_outlined,
@@ -197,7 +199,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
     Task(
       note: _noteController.text,
       title: _titleController.text,
-      date: DateFormat.yMd().format(_selectedDate),
+      date: AddTaskPage.myDateFormat(_selectedDate),//DateFormat.yMd().format(_selectedDate),
       startTime: _startTime,
       endTime: _endTime,
       remind: _selectedRemind,
@@ -207,6 +209,8 @@ class _AddTaskPageState extends State<AddTaskPage> {
     ));
     print("My id is $value");
   }
+
+
 
   _colorPalette() {
     return Column(
