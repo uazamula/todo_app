@@ -5,7 +5,7 @@ import 'package:goals_app/models/task.dart';
 class TaskController extends GetxController {
   @override
   void onReady() {
-    getTask();
+    getTasks();
     super.onReady();
   }
 
@@ -16,13 +16,17 @@ class TaskController extends GetxController {
   }
 
   // get all the data from table
-  void getTask() async {
+  void getTasks() async {
     List<Map<String, dynamic>> tasks = await DBHelper.query();
     taskList.assignAll(tasks.map((data) => new Task.fromJson(data)).toList());
   }
 
   void delete(Task task){
     DBHelper.delete(task);
+
+  }
+
+  void markTaskCompleteted(int id){
 
   }
 }
