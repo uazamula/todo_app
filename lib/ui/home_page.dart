@@ -64,6 +64,7 @@ class _HomePageState extends State<HomePage> {
                 task.date ==
                     AddTaskPage.myDateFormat(
                         _selectedDate) /*DateFormat.yMd().format(_selectedDate)*/) {
+              //TODO for 24:00 format (DateFormat.Hm()....)
               DateTime date = DateFormat.jm().parse(task.startTime!.toString());
               var myTime = DateFormat('HH:mm').format(date);
               var myTimeArr = myTime.toString().split(':');
